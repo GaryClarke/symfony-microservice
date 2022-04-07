@@ -1,0 +1,6 @@
+{EnquiryDTO} => PromotionsFilter
+            Product => Promotions
+
+Promotion
+- Does this apply?
+- Add to the EnquiryDTO or Modify the DTO
