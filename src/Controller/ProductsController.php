@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\LowestPriceEnquiry;
+use App\Filter\PromotionsFilterInterface;
 use App\Service\Serializer\DTOSerializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductsController extends AbstractController
 {
     #[Route('/products/{id}/lowest-price', name: 'lowest-price', methods: 'POST')]
-    public function lowestPrice(Request $request, int $id, DTOSerializer $serializer): Response
+    public function lowestPrice(
+        Request $request,
+        int $id,
+        DTOSerializer $serializer,
+        PromotionsFilterInterface $promotionsFilter
+    ): Response
     {
         if ($request->headers->has('force_fail')) {
 
@@ -24,23 +30,13 @@ class ProductsController extends AbstractController
             );
         }
 
-
-
-        // 1. Deserialize json data into a EnquiryDTO
-        /** @var LowestPriceEnquiry $lowestPriceEnquiry */
         $lowestPriceEnquiry = $serializer->deserialize(
             $request->getContent(), LowestPriceEnquiry::class, 'json'
         );
-        // 2. Pass the Enquiry into a promotions filter
-            // the appropriate promotion will be applied
 
-        // 3. Return the modified Enquiry
-        $lowestPriceEnquiry->setDiscountedPrice(50);
-        $lowestPriceEnquiry->setPrice(100);
-        $lowestPriceEnquiry->setPromotionId(3);
-        $lowestPriceEnquiry->setPromotionName('Black Friday half price sale');
+        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEnquiry);
 
-        $responseContent = $serializer->serialize($lowestPriceEnquiry, 'json');
+        $responseContent = $serializer->serialize($modifiedEnquiry, 'json');
 
         return new Response($responseContent, 200);
     }
