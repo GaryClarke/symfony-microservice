@@ -1,6 +1,26 @@
-{EnquiryDTO} => PromotionsFilter
-            Product => Promotions
+PRODUCT
+- id (int)
+- price (int)
 
-Promotion
-- Does this apply?
-- Add to the EnquiryDTO or Modify the DTO
+PROMOTION
+- id (int)
+- name (string)
+- type (string)
+- adjustment (float)
+- criteria (string|json)
+
+========================================================
+
+id: 1
+name: Black Friday half price sale
+type: date_range_multiplier
+adjustment: 0.5
+criteria: {"from": "2022-11-25", "to": "2022-11-28"}
+
+========================================================
+
+id: 2
+name: Voucher OU812
+type: fixed_price_voucher
+adjustment: 100
+criteria: {"code": "OU812"}
