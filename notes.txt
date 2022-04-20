@@ -24,3 +24,11 @@ name: Voucher OU812
 type: fixed_price_voucher
 adjustment: 100
 criteria: {"code": "OU812"}
+
+========================== DOCKER =========================
+
+php bin/console make:docker:database
+docker-compose up -d
+
+symfony console make:migration
+symfony console doctrine:migrations:migrate
