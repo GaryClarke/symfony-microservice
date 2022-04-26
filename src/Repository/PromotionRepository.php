@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Product;
 use App\Entity\Promotion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -20,6 +21,13 @@ class PromotionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Promotion::class);
     }
+
+    public function findValidForProduct(Product $product, \DateTimeInterface $requestDate)
+    {
+        return $this->createQueryBuilder('p')
+
+    }
+
 
     /**
      * @throws ORMException
