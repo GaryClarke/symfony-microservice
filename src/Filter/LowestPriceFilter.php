@@ -18,7 +18,7 @@ class LowestPriceFilter implements PromotionsFilterInterface
             // Run the promotions' modification logic against the enquiry
             // 1. check does the promotion apply e.g. is it in date range / is the voucher code valid?
             // 2. Apply the price modification to obtain a $modifiedPrice (how?)
-//            $modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
+            $modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
             // 3. check IF $modifiedPrice < $lowestPrice
                 // 1. Save to Enquiry properties
                 // 2. Update $lowestPrice
