@@ -4,6 +4,7 @@ namespace App\Filter;
 
 use App\DTO\PromotionEnquiryInterface;
 use App\Entity\Promotion;
+use App\Filter\Modifier\Factory\PriceModifierFactoryInterface;
 
 class LowestPriceFilter implements PromotionsFilterInterface
 {
