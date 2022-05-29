@@ -17,13 +17,12 @@ class LowestPriceFilter implements PriceFilterInterface
     : PriceEnquiryInterface
     {
         $price = $enquiry->getProduct()->getPrice();
-        $enquiry->setPrice($price);
+        $enquiry->setUnitPrice($price);
         $quantity = $enquiry->getQuantity();
         $lowestPrice = $quantity * $price;
 
         foreach ($promotions as $promotion) {
-
-            $priceModifier = $this->priceModifierFactory->create($promotion->getType());
+            $priceModifier = $this->priceModifierFactory->create($promotion);
 
             $modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
 

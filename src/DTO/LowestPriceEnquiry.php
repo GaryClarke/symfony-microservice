@@ -18,7 +18,7 @@ class LowestPriceEnquiry implements PriceEnquiryInterface
 
     private ?string $requestDate;
 
-    private ?int $price;
+    private ?int $unitPrice;
 
     private ?int $discountedPrice;
 
@@ -61,22 +61,6 @@ class LowestPriceEnquiry implements PriceEnquiryInterface
     /**
      * @return string|null
      */
-    public function getRequestLocation(): ?string
-    {
-        return $this->requestLocation;
-    }
-
-    /**
-     * @param string|null $requestLocation
-     */
-    public function setRequestLocation(?string $requestLocation): void
-    {
-        $this->requestLocation = $requestLocation;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getVoucherCode(): ?string
     {
         return $this->voucherCode;
@@ -109,17 +93,17 @@ class LowestPriceEnquiry implements PriceEnquiryInterface
     /**
      * @return int|null
      */
-    public function getPrice(): ?int
+    public function getUnitPrice(): ?int
     {
-        return $this->price;
+        return $this->unitPrice;
     }
 
     /**
      * @param int|null $price
      */
-    public function setPrice(?int $price): void
+    public function setUnitPrice(?int $price): void
     {
-        $this->price = $price;
+        $this->unitPrice = $price;
     }
 
     /**
@@ -136,14 +120,6 @@ class LowestPriceEnquiry implements PriceEnquiryInterface
     public function setDiscountedPrice(?int $discountedPrice): void
     {
         $this->discountedPrice = $discountedPrice;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getPromotionId(): ?int
-    {
-        return $this->promotionId;
     }
 
     /**

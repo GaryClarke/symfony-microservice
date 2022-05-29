@@ -2,13 +2,15 @@
 
 namespace App\Filter\Modifier\Factory;
 
+use App\Entity\Promotion;
 use App\Filter\Modifier\PriceModifierInterface;
 use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
 class PriceModifierFactory implements PriceModifierFactoryInterface
 {
-    public function create(string $modifierType): PriceModifierInterface
+    public function create(Promotion $promotion): PriceModifierInterface
     {
+        $modifierType = $promotion->getType();
         // Convert type (snake_case) to ClassName (PascalCase)
         $modifierClassBasename = str_replace('_', '', ucwords($modifierType, '_'));
 
@@ -19,6 +21,6 @@ class PriceModifierFactory implements PriceModifierFactoryInterface
             throw new ClassNotFoundException($modifier);
         }
 
-        return new $modifier();
+        return new $modifier(...$promotion->getCriteria());
     }
 }

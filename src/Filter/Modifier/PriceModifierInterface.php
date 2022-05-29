@@ -7,6 +7,6 @@ use App\Entity\Promotion;
 
 interface PriceModifierInterface
 {
-    public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry)
+    public function modify(int $unitPrice, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry)
     : int;
 }

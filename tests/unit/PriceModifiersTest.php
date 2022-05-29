@@ -25,7 +25,7 @@ class PriceModifiersTest extends ServiceTestCase
         $promotion->setCriteria(["from" => "2022-11-25", "to" => "2022-11-28"]);
         $promotion->setType('date_range_multiplier');
 
-        $dateRangeModifier = new DateRangeMultiplier();
+        $dateRangeModifier = new DateRangeMultiplier(...$promotion->getCriteria());
 
         // When
         $modifiedPrice = $dateRangeModifier->modify(100, 5, $promotion, $enquiry);
@@ -37,13 +37,13 @@ class PriceModifiersTest extends ServiceTestCase
     /** @test */
     public function FixedPriceVoucher_returns_a_correctly_modified_price(): void
     {
-        $fixedPriceVoucher = new FixedPriceVoucher();
-
         $promotion = new Promotion();
         $promotion->setName('Voucher OU812');
         $promotion->setAdjustment(100);
         $promotion->setCriteria(["code" => "OU812"]);
         $promotion->setType('fixed_price_voucher');
+
+        $fixedPriceVoucher = new FixedPriceVoucher(...$promotion->getCriteria());
 
         $enquiry = new LowestPriceEnquiry();
         $enquiry->setQuantity(5);
@@ -67,7 +67,7 @@ class PriceModifiersTest extends ServiceTestCase
         $promotion->setCriteria(["minimum_quantity" => 2]);
         $promotion->setType('even_items_multiplier');
 
-        $evenItemsMultiplier = new EvenItemsMultiplier();
+        $evenItemsMultiplier = new EvenItemsMultiplier(...$promotion->getCriteria());
 
         // When
         $modifiedPrice = $evenItemsMultiplier->modify(100, 5, $promotion, $enquiry);
@@ -90,7 +90,7 @@ class PriceModifiersTest extends ServiceTestCase
         $promotion->setCriteria(["minimum_quantity" => 2]);
         $promotion->setType('even_items_multiplier');
 
-        $evenItemsMultiplier = new EvenItemsMultiplier();
+        $evenItemsMultiplier = new EvenItemsMultiplier(...$promotion->getCriteria());
 
         // When
         $modifiedPrice = $evenItemsMultiplier->modify(100, 5, $promotion, $enquiry);

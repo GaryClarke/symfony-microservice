@@ -7,11 +7,15 @@ use App\DTO\PromotionEnquiryInterface;
 
 class FixedPriceVoucher implements PriceModifierInterface
 {
-    public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
+    public function __construct(private string $code)
     {
-        if (!($enquiry->getVoucherCode() === $promotion->getCriteria()['code'])) {
+    }
 
-            return $price * $quantity;
+    public function modify(int $unitPrice, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
+    {
+        if (!($enquiry->getVoucherCode() === $this->code)) {
+
+            return $unitPrice * $quantity;
         }
 
         return $promotion->getAdjustment() * $quantity;
