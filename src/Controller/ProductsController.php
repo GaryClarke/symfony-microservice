@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\DTO\LowestPriceEnquiry;
 use App\Entity\Promotion;
 use App\Filter\PriceFilterInterface;
-use App\Filter\PromotionsFilterInterface;
 use App\Repository\ProductRepository;
 use App\Service\Serializer\DTOSerializer;
 use Doctrine\ORM\EntityManagerInterface;
