@@ -7,18 +7,25 @@ use App\DTO\PromotionEnquiryInterface;
 
 class DateRangeMultiplier implements PriceModifierInterface
 {
-    public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
+    private \DateTimeInterface $from;
+    private \DateTimeInterface $to;
+
+    public function __construct(string $from, string $to)
+    {
+        $this->from = date_create_immutable($from);
+        $this->to = date_create_immutable($to);
+    }
+
+    public function modify(int $unitPrice, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
     {
         $requestDate = date_create($enquiry->getRequestDate());
-        $from = date_create($promotion->getCriteria()['from']);
-        $to = date_create($promotion->getCriteria()['to']);
 
-        if (!($requestDate >= $from && $requestDate < $to)) {
+        if (!($requestDate >= $this->from && $requestDate < $this->to)) {
 
-            return $price * $quantity;
+            return $unitPrice * $quantity;
         }
 
         // (price * quantity) * promotion->adjustment
-        return ($price * $quantity) * $promotion->getAdjustment();
+        return ($unitPrice * $quantity) * $promotion->getAdjustment();
     }
 }

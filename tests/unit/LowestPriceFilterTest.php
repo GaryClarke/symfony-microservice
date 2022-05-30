@@ -25,13 +25,15 @@ class LowestPriceFilterTest extends ServiceTestCase
 
         $promotions = $this->promotionsDataProvider();
 
+        /** @var LowestPriceFilter $lowestPriceFilter */
         $lowestPriceFilter = $this->container->get(LowestPriceFilter::class);
 
         // When
+        /** @var LowestPriceEnquiry $filteredEnquiry */
         $filteredEnquiry = $lowestPriceFilter->apply($enquiry, ...$promotions);
 
         // Then
-        $this->assertSame(100, $filteredEnquiry->getPrice());
+        $this->assertSame(100, $filteredEnquiry->getUnitPrice());
         $this->assertSame(250, $filteredEnquiry->getDiscountedPrice());
         $this->assertSame('Black Friday half price sale', $filteredEnquiry->getPromotionName());
     }

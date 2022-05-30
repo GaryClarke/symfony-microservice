@@ -7,11 +7,15 @@ use App\Entity\Promotion;
 
 class EvenItemsMultiplier implements PriceModifierInterface
 {
-    public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
+    public function __construct(private int $minimum_quantity)
+    {
+    }
+
+    public function modify(int $unitPrice, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
     {
         if ($quantity < 2) {
 
-            return $price * $quantity;
+            return $unitPrice * $quantity;
         }
 
         // Get the odd item..if there is one
@@ -21,6 +25,6 @@ class EvenItemsMultiplier implements PriceModifierInterface
         $evenCount = $quantity - $oddCount; // deduct either 0 or 1
 
         // (($evenCount * $price) * $adjustment) + ($oddCount * $price)
-        return (($evenCount * $price) * $promotion->getAdjustment()) + ($oddCount * $price);
+        return (($evenCount * $unitPrice) * $promotion->getAdjustment()) + ($oddCount * $unitPrice);
     }
 }

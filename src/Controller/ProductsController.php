@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\DTO\LowestPriceEnquiry;
 use App\Entity\Promotion;
-use App\Filter\PromotionsFilterInterface;
+use App\Filter\PriceFilterInterface;
 use App\Repository\ProductRepository;
 use App\Service\Serializer\DTOSerializer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,7 +28,7 @@ class ProductsController extends AbstractController
         Request $request,
         int $id,
         DTOSerializer $serializer,
-        PromotionsFilterInterface $promotionsFilter
+        PriceFilterInterface $promotionsFilter
     ): Response
     {
         if ($request->headers->has('force_fail')) {
