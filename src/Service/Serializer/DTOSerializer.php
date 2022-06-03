@@ -32,6 +32,22 @@ class DTOSerializer implements SerializerInterface
 
     public function deserialize(mixed $data, string $type, string $format, array $context = []): mixed
     {
-        return $this->serializer->deserialize($data, $type, $format, $context);
+        $dto = $this->serializer->deserialize($data, $type, $format, $context);
+
+        // Dispatch an after dto created event
+            // listeners
+
+        return $dto;
     }
+
+
+
+
+
+
+
+
+
+
+
 }
