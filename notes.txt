@@ -32,3 +32,15 @@ docker-compose up -d
 
 symfony console make:migration
 symfony console doctrine:migrations:migrate
+
+========================== EXCEPTIONS =========================
+
+1. Show dev exception 500
+2. Show prod exception 500
+3. Explain want to show user they have done something wrong (400)
+    - want to have more control over the exception
+    - want to have more control over the response / response format
+4. Create ExceptionListener
+5. Dump exception and wire up service
+6. Create ServiceException
+7. Show status code
