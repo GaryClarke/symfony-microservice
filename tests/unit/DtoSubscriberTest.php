@@ -2,42 +2,39 @@
 
 namespace App\Tests\unit;
 
-use App\DTO\LowestPriceEnquiry;
-use App\Event\AfterDtoCreatedEvent;
 use App\Tests\ServiceTestCase;
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
-
-use Symfony\Component\Validator\Exception\ValidationFailedException;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use App\DTO\LowestPriceEnquiry;
+use App\Service\ServiceException;
+use App\Event\AfterDtoCreatedEvent;
+use App\EventSubscriber\DtoSubscriber;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DtoSubscriberTest extends ServiceTestCase
 {
-    /** @test */
-    public function a_dto_is_validated_after_it_has_been_created(): void
+    public function testEventSubscription(): void
     {
-        // Given
-        $dto = new LowestPriceEnquiry();
-        $dto->setQuantity(-5);
-
-        $event = new AfterDtoCreatedEvent($dto);
-
-        /** @var EventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = $this->container->get('debug.event_dispatcher');
-
-        // Expect
-        $this->expectException(ValidationFailedException::class);
-        $this->expectExceptionMessage('This value should be positive.');
-
-        // When
-        $eventDispatcher->dispatch($event);
+        $this->assertArrayHasKey(AfterDtoCreatedEvent::NAME, DtoSubscriber::getSubscribedEvents());
     }
 
+    public function testValidateDto(): void
+    {
+        $validator = $this->createMock(ValidatorInterface::class);
+        $validator->expects($this->once())
+            ->method('validate')
+            ->willReturn(new ConstraintViolationList([
+                new ConstraintViolation('', '', [], null, '', null)
+            ]));
 
+        $dto = new LowestPriceEnquiry();
+        $dto->setQuantity(-5);
+        $subscriber = new DtoSubscriber($validator);
+        $event = new AfterDtoCreatedEvent($dto);
 
+        $this->expectException(ServiceException::class);
+        $this->expectExceptionMessage('Validation failed');
 
-
-
-
-
-
+        $subscriber->validateDto($event);
+    }
 }
