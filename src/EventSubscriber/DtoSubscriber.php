@@ -2,9 +2,8 @@
 
 namespace App\EventSubscriber;
 
-use App\Event\AfterDtoCreatedEvent;
 use App\Service\ServiceException;
-use App\Service\ServiceExceptionData;
+use App\Event\AfterDtoCreatedEvent;
 use App\Service\ValidationExceptionData;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
