@@ -35,19 +35,11 @@ class ProductsController extends AbstractController
         PromotionCache $promotionCache
     ): Response
     {
-        if ($request->headers->has('force_fail')) {
-
-            return new JsonResponse(
-                ['error' => 'Promotions Engine failure message'],
-                $request->headers->get('force_fail')
-            );
-        }
-
         $lowestPriceEnquiry = $serializer->deserialize(
             $request->getContent(), LowestPriceEnquiry::class, 'json'
         );
 
-        $product = $this->repository->find($id); // Add error handling for not found product
+        $product = $this->repository->findOrFail($id);
 
         $lowestPriceEnquiry->setProduct($product);
 

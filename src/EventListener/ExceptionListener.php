@@ -2,6 +2,8 @@
 
 namespace App\EventListener;
 
+use App\Service\ServiceException;
+use App\Service\ServiceExceptionData;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -13,16 +15,14 @@ class ExceptionListener
     {
         $exception = $event->getThrowable();
 
-        $exceptionData = $exception->getExceptionData();
-
-        $response = new JsonResponse($exceptionData->toArray());
-
-        if ($exception instanceof HttpExceptionInterface) {
-            $response->setStatusCode($exception->getStatusCode());
+        if ($exception instanceof ServiceException) {
+            $exceptionData = $exception->getExceptionData();
         } else {
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+            $exceptionData = new ServiceExceptionData($statusCode, $exception->getMessage());
         }
 
+        $response = new JsonResponse($exceptionData->toArray());
         $event->setResponse($response);
     }
 }

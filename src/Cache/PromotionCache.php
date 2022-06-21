@@ -22,8 +22,6 @@ class PromotionCache
 
             $item->expiresAfter(5);
 
-            var_dump('miss');
-
             return $this->repository->findValidForProduct(
                 $product,
                 date_create_immutable($requestDate)
