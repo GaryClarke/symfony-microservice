@@ -41,7 +41,6 @@ class DTOSerializer implements SerializerInterface
 
         $event = new AfterDtoCreatedEvent($dto);
 
-        // Dispatch an after dto created event
         $this->eventDispatcher->dispatch($event, $event::NAME);
 
         return $dto;

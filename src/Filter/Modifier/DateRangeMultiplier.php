@@ -18,7 +18,6 @@ class DateRangeMultiplier implements PriceModifierInterface
             return $price * $quantity;
         }
 
-        // (price * quantity) * promotion->adjustment
         return ($price * $quantity) * $promotion->getAdjustment();
     }
 }

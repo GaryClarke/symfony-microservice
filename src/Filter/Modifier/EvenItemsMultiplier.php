@@ -14,13 +14,10 @@ class EvenItemsMultiplier implements PriceModifierInterface
             return $price * $quantity;
         }
 
-        // Get the odd item..if there is one
-        $oddCount = $quantity % 2; // 0 or 1
+        $oddCount = $quantity % 2;
 
-        // Count how many even items
-        $evenCount = $quantity - $oddCount; // deduct either 0 or 1
+        $evenCount = $quantity - $oddCount;
 
-        // (($evenCount * $price) * $adjustment) + ($oddCount * $price)
         return (($evenCount * $price) * $promotion->getAdjustment()) + ($oddCount * $price);
     }
 }
