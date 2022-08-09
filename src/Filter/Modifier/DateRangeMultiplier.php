@@ -5,8 +5,10 @@ namespace App\Filter\Modifier;
 use App\Entity\Promotion;
 use App\DTO\PromotionEnquiryInterface;
 
-class DateRangeMultiplier implements PriceModifierInterface
+class DateRangeMultiplier extends AbstractPriceModifier
 {
+    protected const PROMOTION_TYPE = Promotion::PROMOTION_TYPE_DATE_RANGE;
+
     public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
     {
         $requestDate = date_create($enquiry->getRequestDate());
