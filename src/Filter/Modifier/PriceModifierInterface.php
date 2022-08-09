@@ -9,4 +9,6 @@ interface PriceModifierInterface
 {
     public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry)
     : int;
+
+    public function canApply(string $promotionType): bool;
 }

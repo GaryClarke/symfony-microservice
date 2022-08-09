@@ -5,10 +5,15 @@ namespace App\Filter;
 use App\Entity\Promotion;
 use App\DTO\PriceEnquiryInterface;
 use App\Filter\Modifier\Factory\PriceModifierFactoryInterface;
+use App\Filter\Modifier\PriceModifierInterface;
+use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
 class LowestPriceFilter implements PriceFilterInterface
 {
-    public function __construct(private PriceModifierFactoryInterface $priceModifierFactory)
+    /**
+     * @param PriceEnquiryInterface[] $priceModifiers
+     */
+    public function __construct(private iterable $priceModifiers)
     {
     }
 
@@ -23,9 +28,19 @@ class LowestPriceFilter implements PriceFilterInterface
 
         foreach ($promotions as $promotion) {
 
-            $priceModifier = $this->priceModifierFactory->create($promotion->getType());
+            $modifiedPrice = null;
+            /** @var PriceModifierInterface $priceModifier */
+            foreach ($this->priceModifiers as $priceModifier) {
+                if ($priceModifier->canApply($promotion->getType())) {
+                    $modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
+                    break;
+                }
 
-            $modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
+            }
+
+            if (null === $modifiedPrice) {
+                throw new ClassNotFoundException("Price modifier not found for promotion with type {$promotion->getType()}");
+            }
 
             if($modifiedPrice < $lowestPrice) {
 

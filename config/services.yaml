@@ -11,6 +11,10 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    _instanceof:
+        App\Filter\Modifier\PriceModifierInterface:
+            tags: [ 'priceModifier.strategy' ]
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -25,3 +29,7 @@ services:
     App\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Filter\LowestPriceFilter:
+        arguments:
+            $priceModifiers: !tagged_iterator 'priceModifier.strategy'

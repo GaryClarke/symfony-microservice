@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PromotionRepository::class)]
 class Promotion
 {
+    public const PROMOTION_TYPE_FIXED_PRICE = 'fixed_price_voucher';
+    public const PROMOTION_TYPE_DATE_RANGE = 'date_range_multiplier';
+    public const PROMOTION_TYPE_EVEN_ITEMS = 'even_items_multiplier';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

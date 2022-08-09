@@ -5,8 +5,10 @@ namespace App\Filter\Modifier;
 use App\DTO\PromotionEnquiryInterface;
 use App\Entity\Promotion;
 
-class EvenItemsMultiplier implements PriceModifierInterface
+class EvenItemsMultiplier extends AbstractPriceModifier
 {
+    protected const PROMOTION_TYPE = Promotion::PROMOTION_TYPE_EVEN_ITEMS;
+
     public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
     {
         if ($quantity < 2) {
